@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup #0.0.2
 
 app = FastAPI()
 
-# Caminho para onde é exportado o csv
+# Caminho para onde é exportado o cspip freezev
 caminho = r"D:\Pós-Graduação\1 - Fase\2 - Pyton para ML e IA\Exercícios\Python\fastApiProject\\"
 
 @app.get("/")
