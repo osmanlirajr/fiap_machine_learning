@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup #0.0.2
 
 
 
-
 def produtos():
     all_dados_produtos = []
 
@@ -25,14 +24,5 @@ def produtos():
                 produto = colunas[0].text.strip()
                 quantidade = colunas[1].text.strip()
                 all_dados_produtos.append({"Ano": ano, "Produto": produto, "Quantidade": quantidade})
-
-    # Escrita do arquivo csv no formato de encoding ANSI
-    with open(caminho + "produtos.csv", mode='w', newline='', encoding='ANSI') as file:
-        # Nome das colunas a serem gravadas no csv
-        fieldnames = ["Ano", "Produto", "Quantidade"]
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        for item in all_dados_produtos:
-            writer.writerow(item)
 
     return all_dados_produtos
