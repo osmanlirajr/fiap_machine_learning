@@ -1,3 +1,4 @@
+from negocio.producao import Producao
 from fastapi import FastAPI #0.111.0
 import requests #2.32.3
 
@@ -5,7 +6,10 @@ app = FastAPI()
 
 @app.get('/api/producao')
 def get_producao():
-    return {'Produto':'Vinho de Mesa','Quantidade':'20','Tipo':'Timto'}
+    producao = Producao()
+    lista_producao = producao.recupera_producao()
+    return lista_producao
+    #return {'Produto':'Vinho de Mesa','Quantidade':'20','Tipo':'Timto'}
 
 @app.get('/api/processamento')
 def get_processamento():
