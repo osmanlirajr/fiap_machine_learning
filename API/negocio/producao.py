@@ -22,8 +22,9 @@ class Producao:
                 colunas = linha.find_all("td")
                 # Quantidade de colunas da tabela
                 if len(colunas) == 2:
-                    produto = colunas[0].text.strip()
-                    if produto != 'VINHO DE MESA' or produto != 'VINHO FINO DE MESA (VINIFERA)'  or produto != 'SUCO ' or produto != 'DERIVADOS':
+                    produto = str(colunas[0].text.strip())
+                    
+                    if not(produto.__eq__('VINHO DE MESA')) or produto != 'VINHO FINO DE MESA (VINIFERA)'  or produto != 'SUCO ' or produto != 'DERIVADOS':
                         print(produto)
                         quantidade = colunas[1].text.strip()
                         all_dados_produtos.append({"Ano": ano, "Produto": produto, "Quantidade": quantidade})
