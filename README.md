@@ -1,13 +1,10 @@
-API pública de consulta nos dados do site http://vitibrasil.cnpuv.embrapa.br/index.php nas respectivas abas:
+## FIAP Machine Learning
 
-- Produção
-- Processamento
-- Comercialização
-- Importação
-- Exportação
++ grupo
 
-
-
-A API  alimenta uma base de dados que é usada para um modelo de Machine Learning.
-
+- Arthur Tavari  | arthurtavari@gmail.com   | rm35637  
+- Elyas Carvalho 
+- Jean Alves     | jean_flu2012@hotmail.com | rm357143 
+- Letica Pires   | leticiapyres@gmail.com   | rm357721
+- Osman Lira     | osman.lira@gmail.com     | rm357904
 
