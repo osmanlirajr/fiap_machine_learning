@@ -1,33 +1,75 @@
-import requests #2.32.3
-from bs4 import BeautifulSoup #0.0.2
+import requests
+from bs4 import BeautifulSoup 
+import pandas as pd
+from modelos.vinho import Vinho
+import os
 
 class Producao:
+    """
+    Classe responsável por recuperar e processar dados de produção de vinhos.
 
-    def recupera_producao(self):
-        all_dados_produtos = []
+    Métodos:
+        recupera_producao(url: str) -> list[Vinhos]: Baixa e processa dados de produção a partir de um arquivo CSV.
+    """
+    @staticmethod
+    def recupera_producao(url):
+        """
+        Baixa o arquivo CSV da URL fornecida, processa os dados e retorna uma lista de objetos Vinhos.
 
-        # For para percorrer os anos no link
-        
-        for ano in range(1970, 2024):
+         Parâmetros:
+            url (str): URL do arquivo CSV.
+
+        Retorna:
+            list[Vinhos]: Lista de objetos Vinhos contendo os dados processados.
+        """
+        temp_file_path = 'Producao_temp.csv'
+
+        # Verificar se o arquivo temporário já existe e deletá-lo
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
+        # Fazer o download do arquivo CSV
+        response = requests.get(url)
+        response.raise_for_status()  # Verifica se houve algum erro na requisição
+
+        # Salvar o conteúdo do CSV em um arquivo temporário
+        with open(temp_file_path, 'wb') as file:
+            file.write(response.content)
+        print('salvei arquivo')
+        # Carregar o arquivo CSV
+        df = pd.read_csv(temp_file_path, delimiter=';')
+
+        # Inicializar uma lista vazia para armazenar os resultados
+        result_list = []
+
+        # Iterar sobre cada linha no dataframe
+        for index, row in df.iterrows():
+            produto = row['produto']
+            tipo_produto = row['control']
             
-            url = f'http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_02'
-            # Faz uma solicitação HTTP para obter o conteúdo da página
-            response = requests.get(url)
-            # Analisa o conteúdo HTML da página usando BeautifulSoup
-            site = BeautifulSoup(response.text, "html.parser")
-            # Encontra a tabela de produtos
-            tabela_produtos = site.find("table", {"class": "tb_base tb_dados"})
+            # Ignorar linhas com tipo_produto começando com VINHO DE MESA, VINHO FINO DE MESA (VINIFERA), SUCO ou DERIVADOS
+            if any(tipo_produto.startswith(prefix) for prefix in ['VINHO DE MESA', 'VINHO FINO DE MESA (VINIFERA)', 'SUCO', 'DERIVADOS']):
+                continue
+            
+            # Ajustar tipo_produto conforme o prefixo
+            if tipo_produto.startswith('vm_'):
+                tipo_produto = 'VINHO DE MESA'
+            elif tipo_produto.startswith('vv_'):
+                tipo_produto = 'VINHO FINO DE MESA (VINIFERA)'
+            elif tipo_produto.startswith('su_'):
+                tipo_produto = 'SUCO'
+            elif tipo_produto.startswith('de_'):
+                tipo_produto = 'DERIVADOS'
+            
+            # Iterar sobre cada coluna de ano (de 1970 a 2023)
+            for year in range(1970, 2024):
+                year_str = str(year)
+                if year_str in row:
+                    quantidade = row[year_str]
+                    result_list.append(Vinho(produto, quantidade, tipo_produto, year))
 
-            for linha in tabela_produtos.find_all("tr"):
-                colunas = linha.find_all("td")
-                # Quantidade de colunas da tabela
-                if len(colunas) == 2:
-                    produto = str(colunas[0].text.strip())
-                    
-                    if not(produto.__eq__('VINHO DE MESA')) or produto != 'VINHO FINO DE MESA (VINIFERA)'  or produto != 'SUCO ' or produto != 'DERIVADOS':
-                        print(produto)
-                        quantidade = colunas[1].text.strip()
-                        all_dados_produtos.append({"Ano": ano, "Produto": produto, "Quantidade": quantidade})
+        # Ordenar a lista pelo ano
+        result_list_sorted = sorted(result_list, key=lambda x: x.ano)
 
-        return all_dados_produtos
+        return result_list_sorted
 

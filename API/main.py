@@ -8,8 +8,13 @@ from auth.models import User
 from auth.models import UserInDB
 from auth.user_manager import UserManager
 from auth.token_manager import TokenManager
+from modelos.vinhos_response import VinhosResponse
+import json
 
 app = FastAPI()
+
+# URL do CSV de producão
+url = 'http://vitibrasil.cnpuv.embrapa.br/download/Producao.csv'
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
@@ -44,12 +49,24 @@ async def protected_route(payload: dict = Depends(TokenManager.verify_token)):
     return {"message": "Você tem acesso ao endpoint protegido", "payload": payload}
 
 
-@app.get('/api/producao')
-def get_producao():
-    producao = Producao()
-    lista_producao = producao.recupera_producao()
-    return lista_producao
-    #return {'Produto':'Vinho de Mesa','Quantidade':'20','Tipo':'Timto'}
+@app.get('/api/producao',response_model=list[VinhosResponse])
+async def get_producao():
+    """
+    Endpoint da API que retorna dados de produção de vinhos no formato JSON.
+
+    Retorna:
+        list[VinhosResponse]: Lista de registros de produção de vinhos.
+    """
+    producao = Producao.recupera_producao(url)
+    
+    # Converter a lista de objetos para uma estrutura JSON
+    producao_json = [vinho.__dict__ for vinho in producao]
+
+    # Salvar o JSON em um arquivo
+    with open('Producao_ordenada.json', 'w') as json_file:
+        json.dump(producao_json, json_file, indent=4)
+
+    return producao_json
 
 @app.get('/api/processamento')
 def get_processamento():
