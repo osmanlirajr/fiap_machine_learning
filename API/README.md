@@ -26,7 +26,6 @@ Antes de começar, certifique-se de ter os seguintes itens instalados em sua má
 
 2. Crie um ambiente virtual:
     ```sh
-    python -m venv venv    
     source venv/bin/activate  # No Windows use `venv\Scripts\activate`
 
 
