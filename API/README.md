@@ -47,8 +47,8 @@ Isso iniciará o servidor na porta 8000 por padrão. Você pode acessar a docume
 
 -  main.py: Arquivo principal onde a aplicação FastAPI é configurada e iniciada.
 -  modelos/: Contém os modelos de dados utilizados pela API.
--  negocios/: Contém as classes de negócio da API.
--  auth/: Contém as funções que proveem a segurança da API com JWT.
+-  services/: Contém Lógica de negócios e funções de serviço.
+-  auth/: Contém as funções que provê a segurança da API com JWT.
 
 ## Teste
 
