@@ -55,6 +55,10 @@ async def protected_route(payload: dict = Depends(TokenManager.verify_token)):
 async def get_producao(payload: dict = Depends(TokenManager.verify_token)):
     """
     Endpoint da API que retorna dados de produção de vinhos no formato JSON.
+    Endpoint protegido que só pode ser acessado com um token JWT válido.
+    
+    Args:
+    payload (dict): Payload do token JWT decodificado.
 
     Retorna:
         list[VinhosResponse]: Lista de registros de produção de vinhos.
@@ -75,9 +79,13 @@ def get_processamento():
     return {}
 
 @app.get('/api/comercializacao')
-async def get_comercializacao():
+async def get_comercializacao(payload: dict = Depends(TokenManager.verify_token)):
     """
     Endpoint da API que retorna dados de comercialização de vinhos no formato JSON.
+    Endpoint protegido que só pode ser acessado com um token JWT válido.
+    
+    Args:
+    payload (dict): Payload do token JWT decodificado.
 
     Retorna:
         list[VinhosResponse]: Lista de registros de comercialização de vinhos.
