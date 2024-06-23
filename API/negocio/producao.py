@@ -1,7 +1,7 @@
+from bs4 import BeautifulSoup
+from modelos.vinho import Vinho 
 import requests
-from bs4 import BeautifulSoup 
 import pandas as pd
-from modelos.vinho import Vinho
 import os
 
 class Producao:
