@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from negocio.producao import Producao
-from negocio.comercializacao import Comercializacao
+from services.producao import Producao
+from services.comercializacao import Comercializacao
 from auth.security import SecurityConfig
 from auth.models import Token
 from auth.models import User
