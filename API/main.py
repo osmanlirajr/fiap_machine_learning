@@ -52,7 +52,7 @@ async def protected_route(payload: dict = Depends(TokenManager.verify_token)):
 
 
 @app.get('/api/producao')
-async def get_producao():
+async def get_producao(payload: dict = Depends(TokenManager.verify_token)):
     """
     Endpoint da API que retorna dados de produção de vinhos no formato JSON.
 
