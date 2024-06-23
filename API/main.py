@@ -75,7 +75,7 @@ async def get_producao(payload: dict = Depends(TokenManager.verify_token)):
     return producao_json
 
 @app.get('/api/processamento')
-def get_processamento():
+async def get_processamento():
     return {}
 
 @app.get('/api/comercializacao')
@@ -103,11 +103,11 @@ async def get_comercializacao(payload: dict = Depends(TokenManager.verify_token)
 
 
 @app.get('/api/importacao')
-def get_importacao():
+async def get_importacao():
     return {}
 
 @app.get('/api/exportacao')
-def get_exportacao():
+async def get_exportacao():
     return {}
 
 
