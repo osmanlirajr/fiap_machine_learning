@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 from negocio.producao import Producao
+from negocio.comercializacao import Comercializacao
 from auth.security import SecurityConfig
 from auth.models import Token
 from auth.models import User
@@ -14,7 +15,9 @@ import json
 app = FastAPI()
 
 # URL do CSV de producão
-url = 'http://vitibrasil.cnpuv.embrapa.br/download/Producao.csv'
+urlProducao = 'http://vitibrasil.cnpuv.embrapa.br/download/Producao.csv'
+# URL do CSV de Comercializacao
+urlComercializacao ='http://vitibrasil.cnpuv.embrapa.br/download/Comercio.csv'
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
@@ -57,7 +60,7 @@ async def get_producao():
     Retorna:
         list[VinhosResponse]: Lista de registros de produção de vinhos.
     """
-    producao = Producao.recupera_producao(url)
+    producao = Producao.recupera_producao(urlProducao)
     
     # Converter a lista de objetos para uma estrutura JSON
     producao_json = [vinho.__dict__ for vinho in producao]
@@ -73,8 +76,24 @@ def get_processamento():
     return {}
 
 @app.get('/api/comercializacao')
-def get_comercializacao():
-    return {}
+async def get_comercializacao():
+    """
+    Endpoint da API que retorna dados de comercialização de vinhos no formato JSON.
+
+    Retorna:
+        list[VinhosResponse]: Lista de registros de comercialização de vinhos.
+    """
+    comercializacao = Comercializacao.recupera_comercializacao(urlComercializacao)
+    
+    # Converter a lista de objetos para uma estrutura JSON
+    comercializacao_json = [vinho.__dict__ for vinho in comercializacao]
+
+    # Salvar o JSON em um arquivo
+    with open('Comercialicao_ordenada.json', 'w') as json_file:
+        json.dump(comercializacao_json, json_file, indent=4)
+
+    return comercializacao_json
+
 
 @app.get('/api/importacao')
 def get_importacao():
