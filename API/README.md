@@ -1,4 +1,12 @@
-API está usando FAST API.
+API pública de consulta nos dados do site http://vitibrasil.cnpuv.embrapa.br/index.php nas respectivas abas:
+
+    Produção
+    Processamento
+    Comercialização
+    Importação
+    Exportação
+
+A API alimenta uma base de dados que é usada para um modelo de Machine Learning. Esta API está usando FAST API.
 
 Para facilitar a configuração usamos o Ambiente Virtual em Python com venv.
 A venv é uma biblioteca integrada ao Python 3.3 e versões posteriores, enquanto virtualenv é uma ferramenta externa que precisa ser instalada separadamente. Para versões mais recentes do Python (3.5 e acima), venv é recomendada, pois oferece funcionalidades semelhantes às do virtualenv e está disponível de forma padrão.
