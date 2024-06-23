@@ -4,6 +4,11 @@ import requests
 import pandas as pd
 import os
 
+# Definir constantes para os tipos de produto
+VINHO_DE_MESA = 'VINHO DE MESA'
+VINHO_FINO_DE_MESA = 'VINHO FINO DE MESA (VINIFERA)'
+SUCO = 'SUCO'
+DERIVADOS = 'DERIVADOS'
 class Producao:
     """
     Classe responsável por recuperar e processar dados de produção de vinhos.
@@ -48,18 +53,18 @@ class Producao:
             tipo_produto = row['control']
             
             # Ignorar linhas com tipo_produto começando com VINHO DE MESA, VINHO FINO DE MESA (VINIFERA), SUCO ou DERIVADOS
-            if any(tipo_produto.startswith(prefix) for prefix in ['VINHO DE MESA', 'VINHO FINO DE MESA (VINIFERA)', 'SUCO', 'DERIVADOS']):
+            if any(tipo_produto.startswith(prefix) for prefix in [VINHO_DE_MESA, VINHO_FINO_DE_MESA, SUCO, DERIVADOS]):
                 continue
             
             # Ajustar tipo_produto conforme o prefixo
             if tipo_produto.startswith('vm_'):
-                tipo_produto = 'VINHO DE MESA'
+                tipo_produto = VINHO_DE_MESA
             elif tipo_produto.startswith('vv_'):
-                tipo_produto = 'VINHO FINO DE MESA (VINIFERA)'
+                tipo_produto = VINHO_FINO_DE_MESA
             elif tipo_produto.startswith('su_'):
-                tipo_produto = 'SUCO'
+                tipo_produto = SUCO
             elif tipo_produto.startswith('de_'):
-                tipo_produto = 'DERIVADOS'
+                tipo_produto = DERIVADOS
             
             # Iterar sobre cada coluna de ano (de 1970 a 2023)
             for year in range(1970, 2024):
