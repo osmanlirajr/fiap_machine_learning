@@ -52,9 +52,9 @@ Isso iniciará o servidor na porta 8000 por padrão. Você pode acessar a docume
 
 ## Teste
 
-1.Obtenha o Token JWT através do endpoint /token. (username:user@example.com / password:fakehashedpassword)
-2.Autentique-se no Swagger UI usando o botão "Authorize" e colocando bearer gerando no endpoint token.
-3.Teste os endpoints protegidos no Swagger UI, agora que você está autenticado.
+- Obtenha o Token JWT através do endpoint /token. (username:user@example.com / password:fakehashedpassword)
+- Autentique-se no Swagger UI usando o botão "Authorize" e colocando bearer gerando no endpoint token.
+- Teste os endpoints protegidos no Swagger UI, agora que você está autenticado.
 
 
 
