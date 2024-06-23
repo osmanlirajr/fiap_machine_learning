@@ -26,7 +26,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados em sua má
 
 2. Crie um ambiente virtual:
     ```sh
-    source venv/bin/activate  # No Windows use `venv\Scripts\activate`
+    source venv/bin/activate  # No Windows use `venv\bin\activate.bat`
 
 
 3. Instale as dependências:
