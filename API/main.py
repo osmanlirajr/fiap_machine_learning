@@ -9,7 +9,6 @@ from auth.models import User
 from auth.models import UserInDB
 from auth.user_manager import UserManager
 from auth.token_manager import TokenManager
-from modelos.vinhos_response import VinhosResponse
 import json
 
 app = FastAPI()
@@ -52,7 +51,7 @@ async def protected_route(payload: dict = Depends(TokenManager.verify_token)):
     return {"message": "Você tem acesso ao endpoint protegido", "payload": payload}
 
 
-@app.get('/api/producao',response_model=list[VinhosResponse])
+@app.get('/api/producao')
 async def get_producao():
     """
     Endpoint da API que retorna dados de produção de vinhos no formato JSON.
