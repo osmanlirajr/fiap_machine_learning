@@ -50,6 +50,13 @@ Isso iniciará o servidor na porta 8000 por padrão. Você pode acessar a docume
 -  negocios/: Contém as classes de negócio da API.
 -  auth/: Contém as funções que proveem a segurança da API com JWT.
 
+## Teste
+
+- Obtenha o Token JWT através do endpoint /token. (username:user@example.com / password:fakehashedpassword)
+- Autentique-se no Swagger UI usando o botão "Authorize" e colocando bearer gerando no endpoint token.
+- Teste os endpoints protegidos no Swagger UI, agora que você está autenticado.
+
+
 
 
 
