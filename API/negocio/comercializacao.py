@@ -35,10 +35,6 @@ class Comercializacao:
         """
         temp_file_path = 'Comercializacao_temp.csv'
 
-        # Verificar se o arquivo temporário já existe e deletá-lo
-        if os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
-
         # Fazer o download do arquivo CSV
         response = requests.get(url)
         response.raise_for_status()  # Verifica se houve algum erro na requisição
@@ -78,7 +74,9 @@ class Comercializacao:
                 if year_str in row:
                     quantidade = row[year_str]
                     result_list.append(Vinho(produto, quantidade, tipo_produto_final, year))
-
+        # Deleta o arquivo temporário já existe e deletá-lo
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
         # Ordenar a lista pelo ano
         result_list_sorted = sorted(result_list, key=lambda x: x.ano)
 
