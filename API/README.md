@@ -1,4 +1,6 @@
-API pública de consulta nos dados do site http://vitibrasil.cnpuv.embrapa.br/index.php nas respectivas abas:
+FIAP Machine Learning API
+Esta é a API para o projeto de Machine Learning da FIAP, desenvolvida com Python e FastAPI.
+Esta API pública de consulta nos dados do site http://vitibrasil.cnpuv.embrapa.br/index.php nas respectivas abas:
 
     Produção
     Processamento
@@ -6,30 +8,45 @@ API pública de consulta nos dados do site http://vitibrasil.cnpuv.embrapa.br/in
     Importação
     Exportação
 
-A API alimenta uma base de dados que é usada para um modelo de Machine Learning. Esta API está usando FAST API.
 
-Para facilitar a configuração usamos o Ambiente Virtual em Python com venv.
-A venv é uma biblioteca integrada ao Python 3.3 e versões posteriores, enquanto virtualenv é uma ferramenta externa que precisa ser instalada separadamente. Para versões mais recentes do Python (3.5 e acima), venv é recomendada, pois oferece funcionalidades semelhantes às do virtualenv e está disponível de forma padrão.
+Requisitos
+Antes de começar, certifique-se de ter os seguintes itens instalados em sua máquina:
 
+Python 3.12
+pip (gerenciador de pacotes do Python)
+Instalação
+Clone este repositório:
 
-O Ven ja está configurado neste projeto. Precisamos apenas ativar o ambiente virtual antesrodar a API. Para isso, execute o seguinte commando:
+sh
+Copiar código
+git clone https://github.com/osmanlirajr/fiap_machine_learning.git
+cd fiap_machine_learning/API
+Crie um ambiente virtual:
 
-MAc e Linux
-    source venv/bin/activate
+sh
+Copiar código
+python -m venv venv
+source venv/bin/activate  # No Windows use `venv\Scripts\activate`
+Instale as dependências:
 
-Windows
-    venv/Scripts/activate.bat
+sh
+Copiar código
+pip install -r requirements.txt
+Executando a API
+Certifique-se de que o ambiente virtual esteja ativado.
 
+Execute o servidor FastAPI:
 
-Para subir o projeto da API executa o seguinte comando no terminal:
-- uvicorn main:app --reload
+sh
+Copiar código
+uvicorn main:app --reload
+Isso iniciará o servidor na porta 8000 por padrão. Você pode acessar a documentação interativa da API em http://127.0.0.1:8000/docs.
 
-Para chamar os metodos REST
+Estrutura do Projeto
+main.py: Arquivo principal onde a aplicação FastAPI é configurada e iniciada.
+modelos/: Contém os modelos de dados utilizados pela API.
+negocios/: Contém  as classes de negocio da API.
+auth/: contem as funcoes que prove a segurança da API com JWT.
 
-http://127.0.0.1:8080/api/NOMEDOREST
-
-Para chamar a Documentação da API
-
-http://127.0.0.1:8080/docs
 
 
