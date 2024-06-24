@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from modelos.uvas import Uvas 
 import requests
 import pandas as pd
 import os
@@ -11,6 +12,7 @@ class Processamento:
 
     def recupera_processa_viniferas(url):
 
+        classificacao = 'Viniferas'
         temp_file_path = 'Processa_Viniferas_temp.csv'
 
         # Fazer o download do arquivo CSV
@@ -25,3 +27,33 @@ class Processamento:
 
         # Inicializar uma lista vazia para armazenar os resultados
         result_list = []
+
+        # Iterar sobre cada linha no dataframe
+        for index, row in df.iterrows():
+            nome = str(row['cultivar']).strip()
+            tipo = str(row['control']).strip()
+            
+            # Ignorar linhas com tipo_produto começando com VINHO DE MESA, VINHO FINO DE MESA (VINIFERA), SUCO ou DERIVADOS
+            if any(tipo.startswith(prefix) for prefix in [TINTAS, BRANCAS_ROSADAS]):
+                continue
+            
+            # Ajustar tipo_produto conforme o prefixo
+            if tipo.startswith('ti_'):
+                tipo = TINTAS
+            elif tipo.startswith('br_'):
+                tipo = BRANCAS_ROSADAS
+            
+            # Iterar sobre cada coluna de ano (de 1970 a 2023)
+            for year in range(1970, 2024):
+                year_str = str(year)
+                if year_str in row:
+                    quantidade = row[year_str]
+                    result_list.append(Uvas(nome, quantidade, tipo, classificacao, year))
+
+        # Deleta o arquivo temporário já existe e deletá-lo
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+        # Ordenar a lista pelo ano
+        result_list_sorted = sorted(result_list, key=lambda x: x.ano)
+
+        return result_list_sorted
