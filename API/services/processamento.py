@@ -10,10 +10,7 @@ BRANCAS_ROSADAS = 'BRANCAS E ROSADAS'
 
 class Processamento:
 
-    def recupera_processa_viniferas(url):
-
-        classificacao = 'Viniferas'
-        temp_file_path = 'Processa_Viniferas_temp.csv'
+    def recupera_processa(url, classificacao, temp_file_path):
 
         # Fazer o download do arquivo CSV
         response = requests.get(url)
@@ -57,3 +54,4 @@ class Processamento:
         result_list_sorted = sorted(result_list, key=lambda x: x.ano)
 
         return result_list_sorted
+
