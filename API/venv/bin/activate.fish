@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/olirajun/Library/CloudStorage/OneDrive-Pessoal/FIAP_POS/fiap_machine_learning/API/venv"
+set -gx VIRTUAL_ENV "/Users/leticiapires/Desktop/fiap_machine_learning/API/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
