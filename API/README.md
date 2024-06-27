@@ -26,6 +26,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados em sua má
 
 2. Crie um ambiente virtual:
     ```sh
+    python -m venv venv
     source venv/bin/activate  # No Windows use `venv\bin\activate.bat`
 
 
@@ -33,7 +34,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados em sua má
     ```sh
     pip install -r requirements.txt
 
-## Executando a API
+## Testar a API localmente
 
 1. Certifique-se de que o ambiente virtual esteja ativado.
 2. Execute o servidor FastAPI:
