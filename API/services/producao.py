@@ -15,12 +15,12 @@ class Producao:
     Classe responsável por recuperar e processar dados de produção de vinhos.
 
     Métodos:
-        recupera_producao(url: str) -> list[Vinhos]: Baixa e processa dados de produção a partir de um arquivo CSV.
+        recupera_producao(url: str) -> list[Vinho]: Baixa e processa dados de produção de vinhos a partir de um arquivo CSV.
     """
     @staticmethod
     def recupera_producao(url):
         """
-        Baixa o arquivo CSV da URL fornecida, processa os dados e retorna uma lista de objetos Vinhos.
+        Baixa o arquivo CSV da URL fornecida, processa os dados e retorna uma lista de objetos Vinhos produzidos.
 
          Parâmetros:
             url (str): URL do arquivo CSV.

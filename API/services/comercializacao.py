@@ -25,7 +25,7 @@ class Comercializacao:
     @staticmethod
     def recupera_comercializacao(url):
         """
-        Baixa o arquivo CSV da URL fornecida, processa os dados e retorna uma lista de objetos Vinhos.
+        Baixa o arquivo CSV da URL fornecida, processa os dados e retorna uma lista de objetos Vinhos comercializados.
 
          Parâmetros:
             url (str): URL do arquivo CSV.
