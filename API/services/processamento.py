@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from modelos.uvas import Uva 
+from modelos.uva import Uva 
 import requests
 import pandas as pd
 import os
@@ -22,11 +22,11 @@ class Processamento:
 
          Parâmetros:
             url (str): URL do arquivo CSV.
-            classificacao (str): A Classificacao do Vinho.
+            classificacao (str): A Classificacao da Uva.
             temp_fileP_path (str): O nome do arquivos csv temporário. 
 
         Retorna:
-            list[Vinhos]: Lista de objetos Uvas contendo os dados processados.
+            list[Uva]: Lista de objetos Uvas contendo os dados processados.
         """
         # Fazer o download do arquivo CSV
         response = requests.get(url)
@@ -77,5 +77,5 @@ class Processamento:
             os.remove(temp_file_path)
         # Ordenar a lista pelo anoi
         result_list_sorted = sorted(result_list, key=lambda x: x.ano) 
-        
+
         return result_list_sorted
