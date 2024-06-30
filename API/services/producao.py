@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup
 from modelos.vinho import Vinho 
 import requests
 import pandas as pd

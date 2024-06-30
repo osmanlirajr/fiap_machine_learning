@@ -1,18 +1,17 @@
-class Uvas:
+class Uva:
     """
     Classe que representa um de uvas
 
     Atributos:
-        pais (str): Nome da uva.
+        nome (str): Nome da uva.
         quantidade (int): Quantidade 
         tipo (str): Tipo do uva (TINTAS, BRANCAS E ROSADAS).
-        classificacao (str): Classificacao da Uva (VINIFERAS, AMERICANAS E HIBRIDAS, UVAS DE MESA, SEM CLASSFICACAO).
-        
+        classificacao (str): Classificacao da Uva (VINIFERAS, AMERICANAS E HIBRIDAS, UVAS DE MESA, SEM CLASSFICACAO). 
         ano (int): Ano de importação.
     """
     def __init__(self, nome, quantidade,tipo, classificacao, ano):
-        self._nome = nome
-        self._quantidade = quantidade
-        self._tipo = tipo
-        self._classificacao = classificacao
-        self._ano = ano
+        self.nome = nome
+        self.quantidade = quantidade
+        self.tipo = tipo
+        self.classificacao = classificacao
+        self.ano = ano

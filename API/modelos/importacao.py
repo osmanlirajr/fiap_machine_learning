@@ -10,8 +10,8 @@ class Importacao:
         ano (int): Ano de importação.
     """
     def __init__(self, pais,quantidade, valor,tipo_importacao,ano):
-        self._nome = pais
-        self._quantidade = quantidade
-        self._valor = valor
-        self._tipo_importacao = tipo_importacao
-        self._ano = ano
+        self.nome = pais
+        self.quantidade = quantidade
+        self.valor = valor
+        self.tipo_importacao = tipo_importacao
+        self.ano = ano

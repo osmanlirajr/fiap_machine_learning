@@ -21,16 +21,33 @@ urlProducao = 'http://vitibrasil.cnpuv.embrapa.br/download/Producao.csv'
 urlComercializacao ='http://vitibrasil.cnpuv.embrapa.br/download/Comercio.csv'
 
 # URL do CSV de processamento de Viniferas
-urlProcessaViniferas = 'http://vitibrasil.cnpuv.embrapa.br/download/Processa_Viniferas.csv'
+urlProcessaViniferas = 'http://vitibrasil.cnpuv.embrapa.br/download/ProcessaViniferas.csv'
 
 # URL do CSV de processamento de Americanas e Hibridas
-urlProcessaAmericanas = 'http://vitibrasil.cnpuv.embrapa.br/download/Processa_Americanas.csv'
+urlProcessaAmericanas = 'http://vitibrasil.cnpuv.embrapa.br/download/ProcessaAmericanas.csv'
 
 # URL do CSV de processamento de Uvas de mesa
-urlProcessaMesa = 'http://vitibrasil.cnpuv.embrapa.br/download/Processa_Mesa.csv'
+urlProcessaMesa = 'http://vitibrasil.cnpuv.embrapa.br/download/ProcessaMesa.csv'
 
 # URL do CSV de processamento de uvas sem classificacao
-urlProcessaSemclass = 'http://vitibrasil.cnpuv.embrapa.br/download/Processa_Semclass.csv'
+urlProcessaSemclass = 'http://vitibrasil.cnpuv.embrapa.br/download/ProcessaSemclass.csv'
+
+# URL do CSV de exportacao de vinhos de mesa
+urlExportaVinho = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpVinho.csv'
+
+# URL do CSV de exportacao de vinhos de mesa
+urlExportaVinho = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpVinho.csv'
+
+# URL do CSV de exportacao de Espumantes
+urlExportaEspumnante = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpEspumantes.csv'
+
+# URL do CSV de exportacao de Uvas Frescas
+urlExportaUvasFrescas = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpUva.csv'
+
+# URL do CSV de exportacao de Suco de Uvas
+urlExportaSucoUvas = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpSuco.csv'
+
+
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
@@ -89,7 +106,7 @@ async def get_producao(payload: dict = Depends(TokenManager.verify_token)):
     return producao_json
 
 @app.get('/api/processamento')
-async def get_processamento():
+async def get_processamento(payload: dict = Depends(TokenManager.verify_token)):
     """
     Endpoint da API que retorna dados de cultivo de uvas no formato JSON.
     Endpoint protegido que só pode ser acessado com um token JWT válido.
@@ -100,10 +117,10 @@ async def get_processamento():
     Retorna:
         list[Uvas]: Lista de registros de uvas cultivadas.
     """
-    processa_viniferas = Processamento.recupera_processa(urlProcessaViniferas, 'VINIFERAS', 'Processa_Viniferas_temp.csv')
-    processa_americanas = Processamento.recupera_processa(urlProcessaAmericanas, 'AMERICANAS E HIBRIDAS', 'Processa_Americanas_temp.csv')
-    processa_mesa = Processamento.recupera_processa(urlProcessaMesa, 'UVAS DE MESA', 'Processa_Mesa_temp.csv')
-    processa_semclass = Processamento.recupera_processa(urlProcessaSemclass, 'SEM CLASSIFICACAO', 'Processa_Semclass_temp.csv')
+    processa_viniferas = Processamento.recupera_processamento(urlProcessaViniferas, 'VINIFERAS', 'Processa_Viniferas_temp.csv')
+    processa_americanas = Processamento.recupera_processamento(urlProcessaAmericanas, 'AMERICANAS E HIBRIDAS', 'Processa_Americanas_temp.csv')
+    processa_mesa = Processamento.recupera_processamento(urlProcessaMesa, 'UVAS DE MESA', 'Processa_Mesa_temp.csv')
+    processa_semclass = Processamento.recupera_processamento(urlProcessaSemclass, 'SEM CLASSIFICACAO', 'Processa_Semclass_temp.csv')
 
 
     todas_uvas = processa_viniferas + processa_americanas + processa_mesa + processa_semclass
@@ -111,7 +128,7 @@ async def get_processamento():
     # Converter a lista de objetos para uma estrutura JSON
     processa_json = [uvas.__dict__ for uvas in todas_uvas]
 
-    
+    #processa_json.append ([uvas.__dict__ for uvas in processa_americanas])
     # Salvar o JSON em um arquivo
     with open('Processamento_ordenado.json', 'w') as json_file:
         json.dump(processa_json, json_file, indent=4)
@@ -149,38 +166,36 @@ async def get_importacao():
     return {}
 
 @app.get('/api/get_exportacao')
-async def get_exportacao():
+async def get_exportacao(payload: dict = Depends(TokenManager.verify_token)):
     """
     Endpoint da API que retorna dados de exportação em JSON.
     Endpoint protegido que só pode ser acessado com um token JWT válido.
     
+    Args:
+    payload (dict): Payload do token JWT decodificado.
+
     Retorna:
-        list[dict]: Lista de registros de exportação.
+        list[Exportacao]: Lista de registros de exportação.
     """
     
-    # URLs dos CSVs para exportação de VINHO, EXPUMANTES, UVA e SUCO
-    urls = {
-        'VINHO': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpVinho.csv',
-        'EXPUMANTES': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpEspumantes.csv',
-        'UVA': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpUva.csv',
-        'SUCO': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpSuco.csv'
-    }
+    exporta_vinnhos = Exportacao.recupera_exportacao(urlExportaVinho, 'VINHOS DE MESA', 'Exporta_Vinhos_temp.csv')
+    exporta_espumantes = Exportacao.recupera_exportacao(urlExportaEspumnante, 'ESPUMANTES', 'Exporta_Espumantes_temp.csv')
+    exporta_uvas = Exportacao.recupera_exportacao(urlExportaUvasFrescas, 'UVAS FRESCAS', 'Expofrta_uvas_temp.csv')
+    exporta_suco = Exportacao.recupera_exportacao(urlExportaSucoUvas, 'SUCO DE UVAS', 'exporta_suco_temp.csv')
 
-    exportacao_completa = []
 
-    # Processar cada URL e adicionar os dados transformados à lista completa
-    for tipo_produto, url in urls.items():
-        try:
-            dados_exportacao = Exportacao.recupera_exportacao(url, tipo_produto)
-            exportacao_completa.extend(dados_exportacao)
-        except Exception as e:
-            return {"error": str(e)}
+    todas_exportacoes = exporta_vinnhos + exporta_espumantes + exporta_uvas + exporta_suco
 
-    # Salvar o JSON em um arquivo (opcional)
-    with open('Exportacao.json', 'w') as json_file:
-        json.dump(exportacao_completa, json_file, indent=4)
+    # Converter a lista de objetos para uma estrutura JSON
+    processa_json = [exportacao.__dict__ for exportacao in todas_exportacoes]
 
-    return exportacao_completa
+    
+    # Salvar o JSON em um arquivo
+    with open('exportacao_ordenado.json', 'w') as json_file:
+        json.dump(processa_json, json_file, indent=4)
+
+
+    return processa_json
 
 
 
