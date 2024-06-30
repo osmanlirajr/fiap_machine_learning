@@ -4,6 +4,7 @@ from datetime import timedelta
 from services.producao import Producao
 from services.processamento import Processamento
 from services.comercializacao import Comercializacao
+from services.exportacao import Exportacao
 from auth.security import SecurityConfig
 from auth.models import Token
 from auth.models import User
@@ -147,10 +148,39 @@ async def get_comercializacao(payload: dict = Depends(TokenManager.verify_token)
 async def get_importacao():
     return {}
 
-@app.get('/api/exportacao')
+@app.get('/api/get_exportacao')
 async def get_exportacao():
-    return {}
+    """
+    Endpoint da API que retorna dados de exportação em JSON.
+    Endpoint protegido que só pode ser acessado com um token JWT válido.
+    
+    Retorna:
+        list[dict]: Lista de registros de exportação.
+    """
+    
+    # URLs dos CSVs para exportação de VINHO, EXPUMANTES, UVA e SUCO
+    urls = {
+        'VINHO': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpVinho.csv',
+        'EXPUMANTES': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpEspumantes.csv',
+        'UVA': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpUva.csv',
+        'SUCO': 'http://vitibrasil.cnpuv.embrapa.br/download/ExpSuco.csv'
+    }
 
+    exportacao_completa = []
+
+    # Processar cada URL e adicionar os dados transformados à lista completa
+    for tipo_produto, url in urls.items():
+        try:
+            dados_exportacao = Exportacao.recupera_exportacao(url, tipo_produto)
+            exportacao_completa.extend(dados_exportacao)
+        except Exception as e:
+            return {"error": str(e)}
+
+    # Salvar o JSON em um arquivo (opcional)
+    with open('Exportacao.json', 'w') as json_file:
+        json.dump(exportacao_completa, json_file, indent=4)
+
+    return exportacao_completa
 
 
 
