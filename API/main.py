@@ -5,6 +5,7 @@ from services.producao import Producao
 from services.processamento import Processamento
 from services.comercializacao import Comercializacao
 from services.exportacao import Exportacao
+from services.importacao import Importacao
 from auth.security import SecurityConfig
 from auth.models import Token
 from auth.models import User
@@ -35,9 +36,6 @@ urlProcessaSemclass = 'http://vitibrasil.cnpuv.embrapa.br/download/ProcessaSemcl
 # URL do CSV de exportacao de vinhos de mesa
 urlExportaVinho = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpVinho.csv'
 
-# URL do CSV de exportacao de vinhos de mesa
-urlExportaVinho = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpVinho.csv'
-
 # URL do CSV de exportacao de Espumantes
 urlExportaEspumnante = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpEspumantes.csv'
 
@@ -46,6 +44,21 @@ urlExportaUvasFrescas = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpUva.csv'
 
 # URL do CSV de exportacao de Suco de Uvas
 urlExportaSucoUvas = 'http://vitibrasil.cnpuv.embrapa.br/download/ExpSuco.csv'
+
+# URL do CSV de importacao de vinhos de mesa
+urlImportaVinho = 'http://vitibrasil.cnpuv.embrapa.br/download/ImpVinhos.csv'
+
+# URL do CSV de importacao de Espumantes
+urlImportaEspumnante = 'http://vitibrasil.cnpuv.embrapa.br/download/ImpEspumantes.csv'
+
+# URL do CSV de importacao de Uvas Frescas
+urlImportaUvasFrescas = 'http://vitibrasil.cnpuv.embrapa.br/download/ImpFrescas.csv'
+
+# URL do CSV de importacao de Uvas Passas
+urlImportaUvasPassas = 'http://vitibrasil.cnpuv.embrapa.br/download/ImpPassas.csv'
+
+# URL do CSV de importacao de Suco de Uvas
+urlImportaSucoUvas = 'http://vitibrasil.cnpuv.embrapa.br/download/ImpSuco.csv'
 
 
 
@@ -162,10 +175,40 @@ async def get_comercializacao(payload: dict = Depends(TokenManager.verify_token)
 
 
 @app.get('/api/importacao')
-async def get_importacao():
-    return {}
+async def get_importacao(payload: dict = Depends(TokenManager.verify_token)):
+    """
+    Endpoint da API que retorna dados de exportação em JSON.
+    Endpoint protegido que só pode ser acessado com um token JWT válido.
+    
+    Args:
+    payload (dict): Payload do token JWT decodificado.
 
-@app.get('/api/get_exportacao')
+    Retorna:
+        list[Exportacao]: Lista de registros de exportação.
+    """
+    
+    importa_vinnhos = Importacao.recupera_importacao(urlExportaVinho, 'VINHOS DE MESA', 'Importa_Vinhos_temp.csv')
+    importa_espumantes = Importacao.recupera_importacao(urlExportaEspumnante, 'ESPUMANTES', 'Importa_Espumantes_temp.csv')
+    importa_uvas_frescas = Importacao.recupera_importacao(urlExportaUvasFrescas, 'UVAS FRESCAS', 'Importa_uvas_frescas_temp.csv')
+    importa_uvas_passas = Importacao.recupera_importacao(urlExportaUvasFrescas, 'UVAS PASSAS', 'Importa_uva_passas_temp.csv')
+    importaca_suco = Importacao.recupera_importacao(urlExportaSucoUvas, 'SUCO DE UVAS', 'Importa_suco_temp.csv')
+
+
+    todas_importacoes = importa_vinnhos + importa_espumantes + importa_uvas_frescas + importa_uvas_passas + importaca_suco
+
+    # Converter a lista de objetos para uma estrutura JSON
+    processa_json = [importacao.__dict__ for importacao in todas_importacoes]
+
+    
+    # Salvar o JSON em um arquivo
+    with open('importacao_ordenado.json', 'w') as json_file:
+        json.dump(processa_json, json_file, indent=4)
+
+
+    return processa_json
+
+
+@app.get('/api/exportacao')
 async def get_exportacao(payload: dict = Depends(TokenManager.verify_token)):
     """
     Endpoint da API que retorna dados de exportação em JSON.
