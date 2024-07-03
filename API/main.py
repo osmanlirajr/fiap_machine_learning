@@ -187,17 +187,17 @@ async def get_importacao(payload: dict = Depends(TokenManager.verify_token)):
         list[Exportacao]: Lista de registros de exportação.
     """
     
-    importa_vinnhos = Importacao.recupera_importacao(urlExportaVinho, 'VINHOS DE MESA', 'Importa_Vinhos_temp.csv')
+    importa_vinhos = Importacao.recupera_importacao(urlExportaVinho, 'VINHOS DE MESA', 'Importa_Vinhos_temp.csv')
     importa_espumantes = Importacao.recupera_importacao(urlExportaEspumnante, 'ESPUMANTES', 'Importa_Espumantes_temp.csv')
     importa_uvas_frescas = Importacao.recupera_importacao(urlExportaUvasFrescas, 'UVAS FRESCAS', 'Importa_uvas_frescas_temp.csv')
     importa_uvas_passas = Importacao.recupera_importacao(urlExportaUvasFrescas, 'UVAS PASSAS', 'Importa_uva_passas_temp.csv')
     importaca_suco = Importacao.recupera_importacao(urlExportaSucoUvas, 'SUCO DE UVAS', 'Importa_suco_temp.csv')
 
 
-    todas_importacoes = importa_vinnhos + importa_espumantes + importa_uvas_frescas + importa_uvas_passas + importaca_suco
+    processa_json = importa_vinhos + importa_espumantes + importa_uvas_frescas + importa_uvas_passas + importaca_suco
 
     # Converter a lista de objetos para uma estrutura JSON
-    processa_json = [importacao.__dict__ for importacao in todas_importacoes]
+    #processa_json = [importacao.__dict__ for importacao in todas_importacoes]
 
     
     # Salvar o JSON em um arquivo
@@ -227,10 +227,9 @@ async def get_exportacao(payload: dict = Depends(TokenManager.verify_token)):
     exporta_suco = Exportacao.recupera_exportacao(urlExportaSucoUvas, 'SUCO DE UVAS', 'exporta_suco_temp.csv')
 
 
-    todas_exportacoes = exporta_vinnhos + exporta_espumantes + exporta_uvas + exporta_suco
-
+    processa_json = exporta_vinnhos + exporta_espumantes + exporta_uvas + exporta_suco
     # Converter a lista de objetos para uma estrutura JSON
-    processa_json = [exportacao.__dict__ for exportacao in todas_exportacoes]
+    #processa_json = [exportacao.__dict__ for exportacao in todas_exportacoes]
 
     
     # Salvar o JSON em um arquivo

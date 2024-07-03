@@ -35,18 +35,19 @@ class Importacao:
 
         # Iterar sobre cada linha no dataframe
         for index, row in df.iterrows():
-            pais = str(row['pais']).strip()     
+            pais = str(row['País']).strip()     
             # Iterar sobre cada coluna de ano (de 1970 a 2023)
             for year in range(1970, 2024):
                 year_str = str(year)
                 if year_str in row:
-                    quantidade = row[year_str]
-                    result_list.append(Importacao(pais, quantidade,classificacao, year))
+                    quantidade = str(row[year_str])
+                    #result_list.append(Importacao(pais, quantidade,classificacao, year_str))
+                    result_list.append({'pais':pais,'quantidade': quantidade,'tipo_importacao': classificacao,'ano': year})
 
         # Deleta o arquivo temporário já existe e deletá-lo
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
         # Ordenar a lista pelo ano
-        result_list_sorted = sorted(result_list, key=lambda x: x.ano)
+        #result_list_sorted = sorted(result_list, key=lambda x: x.ano)
 
-        return result_list_sorted
+        return result_list
