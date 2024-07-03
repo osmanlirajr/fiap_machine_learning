@@ -40,13 +40,10 @@ class Exportacao:
                 year_str = str(year)
                 if year_str in row:
                     quantidade = str(row[year_str])
-                    #result_list.append(Exportacao(pais, quantidade,classificacao, year))
                     result_list.append({'pais':pais,'quantidade': quantidade,'tipo_exportacao': classificacao,'ano': year})
 
         # Deleta o arquivo temporário já existe e deletá-lo
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
-        # Ordenar a lista pelo ano
-        #result_list_sorted = sorted(result_list, key=lambda x: x.ano)
 
         return result_list
