@@ -89,11 +89,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-# Novos Endpoints com segurança
-@app.get("/protected-route")
-async def protected_route(payload: dict = Depends(TokenManager.verify_token)):
-    return {"message": "Você tem acesso ao endpoint protegido", "payload": payload}
-
+#Endpoints com segurança
 
 @app.get('/api/producao')
 async def get_producao(payload: dict = Depends(TokenManager.verify_token)):
