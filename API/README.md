@@ -1,5 +1,5 @@
 
-# FIAP Machine Learning API
+# VINICULTURA API
 
 Esta é a API para o projeto de Machine Learning da FIAP, desenvolvida com Python e FastAPI.
 Esta API pública de consulta nos dados do site [Vitibrasil Embrapa](http://vitibrasil.cnpuv.embrapa.br/index.php) nas respectivas abas:
